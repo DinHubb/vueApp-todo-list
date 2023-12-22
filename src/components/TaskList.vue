@@ -4,9 +4,13 @@
       <div class="flex justify-between pb-6 gap-4">
         <div class="text-blue-400 font-medium">
           Sort by:
-          <select class="ml-3 focus:outline-none focus:border-blue-500 focus:border" name="" id="">
-            <option value="">date</option>
-            <option value="" selected>none</option>
+          <select
+            v-model="selectedOption"
+            @change="$emit('sort', selectedOption)"
+            class="ml-2 focus:outline-none focus:border-blue-500 focus:border bg-zinc-800 text-white pl-1"
+          >
+            <option value="date">date</option>
+            <option value="none">none</option>
           </select>
         </div>
         <div class="text-blue-400 flex flex-row gap-1 ml-auto">
@@ -58,6 +62,11 @@ import TaskItem from './TaskItem.vue'
 export default {
   components: {
     TaskItem
+  },
+  data() {
+    return {
+      selectedOption: 'none'
+    }
   },
   props: {
     tasks: {

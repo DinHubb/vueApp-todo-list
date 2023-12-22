@@ -4,12 +4,13 @@
       <img src="@/assets/logo.svg" class="mb-4" width="126px" height="48px" alt="logo" />
     </header>
     <main class="relative -top-11 flex flex-col justify-center px-4">
-      <task-form @creat="creatTask" />
+      <task-form @create="createTask" />
       <task-list
         :tasks="tasks"
         :countCompleted="countCompleted"
         @remove="removeTask"
         @checked="checkedTask"
+        @sort="sortTask"
       />
     </main>
   </div>
@@ -43,12 +44,13 @@ export default {
           completed: false
         }
       ],
-      countCompleted: 0
+      countCompleted: 0,
+      valueSelected: ''
     }
   },
   methods: {
-    creatTask(task) {
-      this.tasks.push(task)
+    createTask(task) {
+      this.valueSelected === 'date' ? this.tasks.unshift(task) : this.tasks.push(task)
     },
     removeTask(task) {
       this.tasks = this.tasks.filter((o) => o.id !== task.id)
@@ -64,6 +66,14 @@ export default {
         return { ...o, completed }
       })
       this.countCompleted = this.tasks.filter((o) => o.completed === true).length
+    },
+    sortTask(value) {
+      this.valueSelected = value
+      if (value === 'date') {
+        this.tasks = this.tasks.sort((a, b) => b.id - a.id)
+        return
+      }
+      return (this.tasks = this.tasks.sort((a, b) => a.id - b.id))
     }
   }
 }
