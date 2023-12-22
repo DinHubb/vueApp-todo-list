@@ -15,7 +15,7 @@ export default {
         50: '50%'
       },
       maxHeight: {
-        '424-h': '420px'
+        '300-h': '300px'
       }
     }
   },

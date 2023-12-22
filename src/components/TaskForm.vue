@@ -1,6 +1,6 @@
 <template>
   <section class="flex justify-center pb-10">
-    <form class="flex justify-center gap-4 w-3/5 h-20 p-3" @submit="createTask">
+    <form class="flex justify-center gap-4 w-3/5 h-20 p-3" @submit="saveTask">
       <input
         v-model.trim="task.content"
         @input="task.content = $event.target.value"
@@ -23,14 +23,11 @@ export default {
     }
   },
   methods: {
-    createTask(event) {
+    saveTask(event) {
       event.preventDefault()
-      if (this.task.content.length < 1) return null
-      this.task.id = Date.now()
-      this.task.completed = false
-      this.$emit('create', this.task)
-      this.task = {
-        content: ''
+      if (this.task.content.trim().length > 0) {
+        this.$emit('save', { ...this.task, id: Date.now(), completed: false, isEdited: false })
+        this.task.content = ''
       }
     }
   }
