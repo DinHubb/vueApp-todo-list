@@ -1,13 +1,14 @@
 <template>
-  <section class="text-lg">
-    <div class="m-auto w-2/3">
-      <div class="flex justify-between pb-6 gap-4">
+  <section class="text-xs sm:text-lg">
+    <div class="m-auto w-full sm:w-10/12 lg:w-2/3">
+      <div class="flex justify-between pb-6 gap-2 sm:gap-4">
         <div class="text-blue-400 font-medium">
-          Sort by:
+          <label for="select">Sort by:</label>
           <select
+            id="select"
             v-model="selectedOption"
             @change="$emit('sort', selectedOption)"
-            class="ml-2 focus:outline-none focus:border-blue-500 focus:border bg-zinc-800 text-white pl-1"
+            class="sm:ml-2 ml-1 cursor-pointer focus:outline-none focus:border-blue-500 focus:border bg-zinc-800 text-white px-1"
           >
             <option value="date">date</option>
             <option value="none">none</option>
@@ -27,7 +28,7 @@
         </div>
       </div>
       <div class="rounded-xl border-t-2 border-t-slate-600 pt-6">
-        <div v-if="tasks.length < 1" class="flex flex-col items-center pt-14">
+        <div v-if="tasks.length < 1" class="flex flex-col items-center sm:pt-14 pt-6">
           <img
             src="@/assets/clipboard.svg"
             class="pb-4"
@@ -47,10 +48,10 @@
             v-for="task in tasks"
             :key="task.id"
             task="task"
-            class="relative bg-input-color pl-16 p-4 m-4 flex items-center justify-between gap-4 rounded-md"
+            class="md:pl-16 md:p-4 ms:gap-4 relative bg-input-color pl-12 p-2 m-2 md:m-4 flex items-center justify-between gap-2 rounded-md"
           >
             <button
-              class="absolute left-3 border-4 border-blue-400 rounded-max-br w-8 h-7 font-bold"
+              class="md:w-8 md:h-7 w-6 h-6 absolute left-3 border-4 border-blue-400 rounded-max-br font-bold"
               :style="task.completed ? taskComplet : ''"
               @click="$emit('checked', task)"
             >
@@ -61,18 +62,26 @@
                 v-model.trim="task.content"
                 @input="task.content = $event.target.value"
                 @keyup.enter="$emit('edit', task)"
-                @blur="$emit('edit', task)"
+                id="editInput"
                 class="bg-input-color w-full focus:outline-none focus:border-zinc-700 focus:border"
               />
             </div>
             <div v-else :style="task.completed ? taskContent : ''" class="tracking-wide">
               {{ task.content }}
             </div>
-            <div class="flex gap-4">
-              <button class="text-3xl text-zinc-600" @click="$emit('edit', task), editFoucus">
-                ✃
+            <div class="flex ms:gap-4 gap-2">
+              <button
+                class="md:text-3xl text-2xl text-zinc-600"
+                @click="$emit('edit', task), editFoucus"
+              >
+                <label for="editInput" class="cursor-pointer">✃</label>
               </button>
-              <button class="text-3xl text-zinc-600" @click="$emit('remove', task)">⛒</button>
+              <button
+                class="md:text-3xl text-2xl cursor-pointer text-zinc-600"
+                @click="$emit('remove', task)"
+              >
+                ⛒
+              </button>
             </div>
           </li>
         </ul>

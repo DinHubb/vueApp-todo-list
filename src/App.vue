@@ -1,7 +1,9 @@
 <template>
   <div class="w-full bg-main-color overflow-hidden">
-    <header class="bg-header-color flex flex-col items-center justify-center pt-8 p-14 text-white">
-      <img src="@/assets/logo.svg" width="126px" height="48px" class="pb-2" alt="logo" />
+    <header
+      class="md:pt-8 md:p-14 bg-header-color flex flex-col items-center justify-center pt-4 p-10 text-white"
+    >
+      <img src="@/assets/logo.svg" width="126px" height="48px" class="pb-3" alt="logo" />
     </header>
     <main class="relative -top-11 flex flex-col justify-center px-4">
       <task-form @save="saveTask" />
@@ -31,25 +33,13 @@ export default {
       tasks: [
         {
           id: 1,
-          content: 'hey its first our tasks about vue! lets learn this lorem ispum',
-          completed: false,
+          content: 'Complete a task from the MegaFon',
+          completed: true,
           isEdited: false
         },
         {
           id: 2,
-          content: 'hey its second our tasks about tailwind! lets learn this',
-          completed: false,
-          isEdited: false
-        },
-        {
-          id: 3,
-          content: 'hey its third our tasks about vite! lets learn this',
-          completed: false,
-          isEdited: false
-        },
-        {
-          id: 4,
-          content: 'hey its third our tasks about vite! lets learn this',
+          content: 'Go through the following stages: interview',
           completed: false,
           isEdited: false
         }
@@ -58,12 +48,19 @@ export default {
       valueSelected: ''
     }
   },
+  async mounted() {
+    const data = await localStorage.getItem('tasks')
+    data ? (this.tasks = JSON.parse(data)) : null
+    this.countCompleted = this.tasks.filter((o) => o.completed === true).length
+  },
   methods: {
     saveTask(task) {
       this.valueSelected === 'date' ? this.tasks.unshift(task) : this.tasks.push(task)
+      this.localStorage(this.tasks)
     },
     removeTask(task) {
-      return (this.tasks = this.tasks.filter((o) => o.id !== task.id))
+      this.tasks = this.tasks.filter((o) => o.id !== task.id)
+      this.localStorage(this.tasks)
     },
     checkedTask(task) {
       this.tasks = this.tasks.map((o) => {
@@ -73,7 +70,8 @@ export default {
         let completed = complet ? complet : complet
         return { ...o, completed }
       })
-      return (this.countCompleted = this.tasks.filter((o) => o.completed === true).length)
+      this.countCompleted = this.tasks.filter((o) => o.completed === true).length
+      this.localStorage(this.tasks)
     },
     sortTask(value) {
       this.valueSelected = value
@@ -81,15 +79,22 @@ export default {
         this.tasks = this.tasks.sort((a, b) => b.id - a.id)
         return
       }
-      return (this.tasks = this.tasks.sort((a, b) => a.id - b.id)) // так как у меня id это дата их создание то сортировка c none будет сортировкой по id
+
+      this.tasks = this.tasks.sort((a, b) => a.id - b.id) // т
     },
     edit(task) {
       this.tasks = this.tasks.map((o) => {
         if (o.id !== task.id) return o
         const edited = !o.isEdited
         let isEdited = edited ? edited : edited
+        console.log(isEdited)
         return { ...o, isEdited }
       })
+      this.localStorage(this.tasks)
+    },
+    localStorage(data, selectedOption) {
+      localStorage.setItem('tasks', JSON.stringify(data))
+      selectedOption ? localStorage.setItem('sortBy', JSON.stringify(selectedOption)) : null
     }
   }
 }
