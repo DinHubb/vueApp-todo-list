@@ -1,30 +1,32 @@
 <template>
-  <section class="text-xs sm:text-lg">
-    <div class="m-auto w-full sm:w-10/12 lg:w-2/3">
-      <div class="flex justify-between pb-6 gap-2 sm:gap-4">
+  <section class="text-base sm:text-lg 2xl:text-2xl">
+    <div class="m-auto w-full sm:w-10/12 lg:w-2/3 2xl:w-10/12">
+      <div class="flex justify-between items-center flex-nowrap pb-6">
         <div class="text-blue-400 font-medium">
           <label for="select">Sort by:</label>
           <select
             id="select"
             v-model="selectedOption"
             @change="$emit('sort', selectedOption)"
-            class="sm:ml-2 ml-1 cursor-pointer focus:outline-none focus:border-blue-500 focus:border bg-zinc-800 text-white px-1"
+            class="ml-1 cursor-pointer focus:outline-none focus:border-blue-500 focus:border bg-zinc-800 text-white p-1 sm:ml-2"
           >
             <option value="date">date</option>
             <option value="none">none</option>
           </select>
         </div>
-        <div class="text-blue-400 flex flex-row gap-1 ml-auto">
-          Tasks
-          <span class="bg-zinc-800 text-white rounded-full px-2 text-center">{{
-            tasks.length
-          }}</span>
-        </div>
-        <div class="text-blue-600 flex flex-row gap-1">
-          Completed
-          <span class="bg-zinc-800 text-white rounded-full px-2 text-center">{{
-            countCompleted
-          }}</span>
+        <div class="gap-4 sm:flex">
+          <div class="text-blue-400 flex flex-row gap-1">
+            Tasks
+            <span class="bg-zinc-800 text-white rounded-full px-2 text-center">{{
+              tasks.length
+            }}</span>
+          </div>
+          <div class="text-blue-600 flex flex-row gap-1">
+            Completed
+            <span class="bg-zinc-800 text-white rounded-full px-2 text-center">{{
+              countCompleted
+            }}</span>
+          </div>
         </div>
       </div>
       <div class="rounded-xl border-t-2 border-t-slate-600 pt-6">
@@ -42,16 +44,16 @@
           </h2>
         </div>
         <ul
-          class="flex flex-col text-white max-h-300-h scrollbar-thin scrollbar-track-neutral-800 scrollbar-thumb-zinc-600 overflow-y-auto"
+          class="flex flex-col flex-none text-white max-h-300-h scrollbar-thin scrollbar-track-neutral-800 scrollbar-thumb-zinc-600 overflow-y-auto"
         >
           <li
             v-for="task in tasks"
             :key="task.id"
             task="task"
-            class="md:pl-16 md:p-4 ms:gap-4 relative bg-input-color pl-12 p-2 m-2 md:m-4 flex items-center justify-between gap-2 rounded-md"
+            class="relative flex flex-1 gap-2 items-center justify-between m-2 p-2 pl-12 bg-input-color rounded-md md:pl-14 md:p-4 2xl:p-6 2xl:pl-16"
           >
             <button
-              class="md:w-8 md:h-7 w-6 h-6 absolute left-3 border-4 border-blue-400 rounded-max-br font-bold"
+              class="w-6 h-6 absolute left-3 border-4 border-blue-400 rounded-max-br font-bold md:w-8 md:h-7 2xl:left-4"
               :style="task.completed ? taskComplet : ''"
               @click="$emit('checked', task)"
             >
@@ -66,18 +68,22 @@
                 class="bg-input-color w-full focus:outline-none focus:border-zinc-700 focus:border"
               />
             </div>
-            <div v-else :style="task.completed ? taskContent : ''" class="tracking-wide">
+            <span
+              v-else
+              :style="task.completed ? taskContent : ''"
+              class="tracking-wide text-wrap min-w-1"
+            >
               {{ task.content }}
-            </div>
-            <div class="flex ms:gap-4 gap-2">
+            </span>
+            <div class="flex gap-2 sm:gap-4 2xl:gap-6">
               <button
-                class="md:text-3xl text-2xl text-zinc-600"
+                class="text-2xl cursor-pointer text-zinc-600 md:text-3xl 2xl:text-4xl"
                 @click="$emit('edit', task), editFoucus"
               >
                 <label for="editInput" class="cursor-pointer">✃</label>
               </button>
               <button
-                class="md:text-3xl text-2xl cursor-pointer text-zinc-600"
+                class="text-2xl cursor-pointer text-zinc-600 md:text-3xl 2xl:text-4xl"
                 @click="$emit('remove', task)"
               >
                 ⛒

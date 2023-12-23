@@ -1,9 +1,15 @@
 <template>
   <div class="w-full bg-main-color overflow-hidden">
     <header
-      class="md:pt-8 md:p-14 bg-header-color flex flex-col items-center justify-center pt-4 p-10 text-white"
+      class="bg-header-color flex flex-col items-center justify-center pt-4 p-10 text-white md:pt-8 md:p-14 2xl:pt-16 2xl:p-20"
     >
-      <img src="@/assets/logo.svg" width="126px" height="48px" class="pb-3" alt="logo" />
+      <img
+        src="@/assets/logo.svg"
+        width="126px"
+        height="48px"
+        class="pb-3 xl:w-40 2xl:w-52"
+        alt="logo"
+      />
     </header>
     <main class="relative -top-11 flex flex-col justify-center px-4">
       <task-form @save="saveTask" />
@@ -60,6 +66,7 @@ export default {
     },
     removeTask(task) {
       this.tasks = this.tasks.filter((o) => o.id !== task.id)
+      this.checkedTask(this.tasks)
       this.localStorage(this.tasks)
     },
     checkedTask(task) {
@@ -80,11 +87,11 @@ export default {
         return
       }
 
-      this.tasks = this.tasks.sort((a, b) => a.id - b.id) // т
+      return (this.tasks = this.tasks.sort((a, b) => a.id - b.id)) // так как id у меня это дата их создание то сортировка по дефолту подрозумевает сортировку по id
     },
     edit(task) {
       this.tasks = this.tasks.map((o) => {
-        if (o.id !== task.id) return o
+        if (o.id !== task.id || task.content.trim().length > 150) return o
         const edited = !o.isEdited
         let isEdited = edited ? edited : edited
         console.log(isEdited)
@@ -92,9 +99,8 @@ export default {
       })
       this.localStorage(this.tasks)
     },
-    localStorage(data, selectedOption) {
+    localStorage(data) {
       localStorage.setItem('tasks', JSON.stringify(data))
-      selectedOption ? localStorage.setItem('sortBy', JSON.stringify(selectedOption)) : null
     }
   }
 }
