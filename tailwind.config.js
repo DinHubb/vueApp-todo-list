@@ -16,6 +16,15 @@ export default {
       },
       maxHeight: {
         '300-h': '300px'
+      },
+      backgroundImage: {
+        'add-plus': 'url(@/assets/icons/plus.svg)'
+      },
+      backgroundPosition: {
+        'custom-right': 'right 8px center'
+      },
+      fontSize: {
+        'custom-28': '28px'
       }
     }
   },

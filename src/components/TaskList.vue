@@ -32,7 +32,7 @@
       <div class="rounded-xl border-t-2 border-t-slate-600 pt-6">
         <div v-if="tasks.length < 1" class="flex flex-col items-center sm:pt-14 pt-6">
           <img
-            src="@/assets/clipboard.svg"
+            src="@/assets/icons/clipboard.svg"
             class="pb-4"
             width="56px"
             height="56px"
@@ -50,7 +50,7 @@
             v-for="task in tasks"
             :key="task.id"
             task="task"
-            class="relative flex flex-1 gap-2 items-center justify-between m-2 p-2 pl-12 bg-input-color rounded-md md:pl-14 md:p-4 2xl:p-6 2xl:pl-16"
+            class="relative flex flex-0 gap-2 items-center justify-between m-2 p-2 pl-12 bg-input-color rounded-md overflow-hidden break-words md:pl-14 md:p-4 2xl:p-6 2xl:pl-16"
           >
             <button
               class="w-6 h-6 absolute left-3 border-4 border-blue-400 rounded-max-br font-bold md:w-8 md:h-7 2xl:left-4"
@@ -77,13 +77,13 @@
             </span>
             <div class="flex gap-2 sm:gap-4 2xl:gap-6">
               <button
-                class="text-2xl cursor-pointer text-zinc-600 md:text-3xl 2xl:text-4xl"
+                class="text-custom-28 cursor-pointer text-zinc-600 sm:text-3xl md:text-3xl 2xl:text-4xl"
                 @click="$emit('edit', task), editFoucus"
               >
                 <label for="editInput" class="cursor-pointer">✃</label>
               </button>
               <button
-                class="text-2xl cursor-pointer text-zinc-600 md:text-3xl 2xl:text-4xl"
+                class="text-custom-28 cursor-pointer text-zinc-600 sm:text-3xl md:text-3xl 2xl:text-4xl"
                 @click="$emit('remove', task)"
               >
                 ⛒

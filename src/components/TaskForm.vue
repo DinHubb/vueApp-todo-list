@@ -15,14 +15,14 @@
       />
       <label
         for="createTaskInput"
-        class="absolute ml-4 -bottom-2 text-white text-base"
+        class="absolute ml-4 -bottom-3 text-white text-base 2xl:-bottom-8"
         :style="lengthContent > 150 ? lengthInput : ''"
         >{{ lengthContent }}/150</label
       >
       <button
-        class="text-center bg-sky-700 px-2 rounded-lg text-white hover:shadow-md hover:shadow-cyan-950 active:shadow-inner active:shadow-cyan-950 text-nowrap sm:px-4"
+        class="text-center bg-sky-700 pl-2 pr-8 rounded-lg text-white hover:shadow-md hover:shadow-cyan-950 active:shadow-inner active:shadow-cyan-950 text-nowrap bg-add-plus bg-no-repeat bg-custom-right sm:pr-7"
       >
-        add +
+        add
       </button>
     </form>
   </section>
@@ -46,6 +46,7 @@ export default {
       if (this.task.content.trim().length > 0 && this.task.content.length <= 150) {
         this.$emit('save', { ...this.task, id: Date.now(), completed: false, isEdited: false })
         this.task.content = ''
+        this.lengthContent = 0
       }
     },
     createTaskChange(evt) {
