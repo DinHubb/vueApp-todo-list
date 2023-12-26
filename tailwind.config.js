@@ -15,7 +15,7 @@ export default {
         50: '50%'
       },
       maxHeight: {
-        '300-h': '300px'
+        '320-h': '320px'
       },
       backgroundImage: {
         'add-plus': 'url(@/assets/icons/plus.svg)'

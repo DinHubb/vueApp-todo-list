@@ -1,3 +1,95 @@
+<script setup>
+import { ref, computed, watchEffect } from 'vue'
+import TaskForm from '@/components/TaskForm.vue'
+import TaskList from '@/components/TaskList.vue'
+
+const tasks = ref(
+  JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || [
+      {
+        id: 1,
+        content: 'Complete a task from the MegaFon',
+        completed: true,
+        isEdited: false
+      },
+      {
+        id: 2,
+        content: 'Go through the following stages: interview',
+        completed: false,
+        isEdited: false
+      }
+    ]
+  )
+)
+
+const STORAGE_KEY = 'tasks'
+let valueSelected = ''
+
+const filters = {
+  completed: (tasks) => tasks.filter((task) => task.completed),
+  sortedDefault: (tasks) => tasks.sort((a, b) => a.id - b.id),
+  sortedByDate: (tasks) => tasks.sort((a, b) => b.id - a.id)
+}
+
+const countCompleted = computed(() => filters.completed(tasks.value).length)
+
+watchEffect(() => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks.value))
+})
+
+const saveTask = (task) => {
+  if (!task) return null
+
+  valueSelected === 'date' ? tasks.value.unshift(task) : tasks.value.push(task)
+}
+
+const handleChecked = (task) => {
+  if (!task) return null
+
+  tasks.value = tasks.value.map((o) => {
+    if (o.id !== task.id) return o
+
+    let completed = !task.completed
+    return { ...o, completed }
+  })
+}
+
+const handleRemove = (id) => {
+  if (!id) return null
+  tasks.value = tasks.value.filter((o) => o.id !== id)
+}
+
+let beforeEditCache = ''
+const edit = (task) => {
+  if (!task) return null
+
+  beforeEditCache = task.content
+  tasks.value = tasks.value.map((o) => {
+    if (o.id !== task.id || task.content.trim().length > 150) return o
+
+    let isEdited = !o.isEdited
+    return { ...o, isEdited }
+  })
+}
+
+const cancelEdit = (task) => {
+  if (task.isEdited) {
+    task.content = beforeEditCache
+    task.isEdited = false
+  }
+
+  return null
+}
+
+const sortTask = ({ value }) => {
+  valueSelected = value
+  if (value === 'date') {
+    return (tasks.value = filters.sortedByDate(tasks.value))
+  }
+  return (tasks.value = filters.sortedDefault(tasks.value)) // так как id у меня это дата их создание то сортировка по дефолту подрозумевает сортировку по id
+}
+</script>
+
 <template>
   <div class="w-full bg-main-color overflow-hidden">
     <header
@@ -12,24 +104,21 @@
       />
     </header>
     <main class="relative -top-11 flex flex-col justify-center px-4">
-      <task-form @save="saveTask" />
-      <task-list
-        :tasks="tasks"
+      <TaskForm @saveTask="saveTask" />
+      <TaskList
+        :data="tasks"
         :countCompleted="countCompleted"
-        @remove="removeTask"
-        @checked="checkedTask"
-        @sort="sortTask"
-        @edit="edit"
+        @handleChecked="handleChecked"
+        @handleRemove="handleRemove"
+        @editTask="edit"
+        @cancelEdit="cancelEdit"
+        @sortedTask="sortTask"
       />
     </main>
   </div>
 </template>
 
-<script>
-import TaskForm from '@/components/TaskForm.vue'
-import TaskList from '@/components/TaskList.vue'
-
-export default {
+<!-- export default {
   components: {
     TaskForm,
     TaskList
@@ -102,6 +191,4 @@ export default {
     localStorage(data) {
       localStorage.setItem('tasks', JSON.stringify(data))
     }
-  }
-}
-</script>
+  } -->
