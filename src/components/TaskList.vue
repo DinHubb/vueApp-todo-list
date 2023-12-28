@@ -7,7 +7,7 @@ const props = defineProps({
 })
 
 let selectedOption = ref('none')
-let sortedName = localStorage.getItem('sorted')
+const sortedName = localStorage.getItem('sorted')
 sortedName ? (selectedOption.value = JSON.parse(sortedName)) : null
 
 watchEffect(() => {

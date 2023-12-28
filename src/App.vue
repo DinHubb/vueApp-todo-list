@@ -24,6 +24,8 @@ const tasks = ref(
 
 const STORAGE_KEY = 'tasks'
 let valueSelected = ''
+let sortedNameJson = localStorage.getItem('sorted')
+sortedNameJson ? (valueSelected = JSON.parse(sortedNameJson)) : null
 
 const filters = {
   completed: (tasks) => tasks.filter((task) => task.completed),
@@ -83,7 +85,6 @@ const cancelEdit = (task) => {
 
 const sortTask = ({ value }) => {
   if (!value) return null
-  valueSelected = value
 
   if (value === 'date') {
     return (tasks.value = filters.sortedByDate(tasks.value))
