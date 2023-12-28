@@ -1,12 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const props = defineProps({
   data: Array,
   countCompleted: Number
 })
 
-const selectedOption = ref('none')
+const selectedOption = ref(JSON.parse(localStorage.getItem('sorted') || 'none'))
+
+watchEffect(() => {
+  localStorage.setItem('sorted', JSON.stringify(selectedOption.value))
+})
+
 const taskContent = ref({
   textDecoration: 'line-through',
   color: '#808080'
