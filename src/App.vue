@@ -85,6 +85,7 @@ const cancelEdit = (task) => {
 
 const sortTask = ({ value }) => {
   if (!value) return null
+  valueSelected = value
 
   if (value === 'date') {
     return (tasks.value = filters.sortedByDate(tasks.value))
