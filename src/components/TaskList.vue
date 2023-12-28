@@ -6,7 +6,9 @@ const props = defineProps({
   countCompleted: Number
 })
 
-const selectedOption = ref(JSON.parse(localStorage.getItem('sorted') || 'none'))
+let selectedOption = ref('none')
+let sortedName = localStorage.getItem('sorted')
+sortedName ? (selectedOption.value = JSON.parse(sortedName)) : null
 
 watchEffect(() => {
   localStorage.setItem('sorted', JSON.stringify(selectedOption.value))
