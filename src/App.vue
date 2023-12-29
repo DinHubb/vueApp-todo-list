@@ -3,28 +3,26 @@ import { ref, computed, watchEffect } from 'vue'
 import TaskForm from '@/components/TaskForm.vue'
 import TaskList from '@/components/TaskList.vue'
 
-const tasks = ref(
-  JSON.parse(
-    localStorage.getItem(STORAGE_KEY) || [
-      {
-        id: 1,
-        content: 'Complete a task from the MegaFon',
-        completed: true,
-        isEdited: false
-      },
-      {
-        id: 2,
-        content: 'Go through the following stages: interview',
-        completed: false,
-        isEdited: false
-      }
-    ]
-  )
-)
+const tasks = ref([
+  {
+    id: 1,
+    content: 'Complete a task from the MegaFon',
+    completed: true,
+    isEdited: false
+  },
+  {
+    id: 2,
+    content: 'Go through the following stages: interview',
+    completed: false,
+    isEdited: false
+  }
+])
 
-const STORAGE_KEY = 'tasks'
-let valueSelected = ''
+const jsonData = localStorage.getItem('tasks')
+jsonData ? (tasks.value = JSON.parse(jsonData)) : null
+
 let sortedNameJson = localStorage.getItem('sorted')
+let valueSelected = ''
 sortedNameJson ? (valueSelected = JSON.parse(sortedNameJson)) : null
 
 const filters = {
@@ -36,7 +34,7 @@ const filters = {
 const countCompleted = computed(() => filters.completed(tasks.value).length)
 
 watchEffect(() => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks.value))
+  localStorage.setItem('tasks', JSON.stringify(tasks.value))
 })
 
 const saveTask = (task) => {
